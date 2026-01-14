@@ -6,3 +6,5 @@ python-dotenv
 passlib[bcrypt]
 python-jose
 resend
+email-validator
+pydantic[email]
