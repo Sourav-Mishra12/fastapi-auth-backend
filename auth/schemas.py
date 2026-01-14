@@ -1,9 +1,9 @@
-from pydantic import BaseModel , EmailStr , field_validator
+from pydantic import BaseModel , EmailStr , field_validator , Field
 
 
 class UserCreate(BaseModel):
     email : EmailStr
-    password : str
+    password : str = Field(min_length=8,max_length=64)
 
     @field_validator("password")
     @classmethod
