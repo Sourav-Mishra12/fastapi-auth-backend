@@ -1,10 +1,24 @@
 fastapi
-uvicorn
+uvicorn[standard]
+
+# Database
 sqlalchemy
 psycopg2-binary
-python-dotenv
-passlib==1.7.4
+
+# Auth & Security
+python-jose[cryptography]
+passlib[bcrypt]
 bcrypt==3.2.2
-python-jose
-email-validator
+
+# Validation
 pydantic
+email-validator
+
+# Env & config
+python-dotenv
+
+# Emails
+resend
+
+# Utils
+python-multipart
