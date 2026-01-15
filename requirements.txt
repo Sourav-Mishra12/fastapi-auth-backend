@@ -1,12 +1,22 @@
-fastapi
-uvicorn
-sqlalchemy
-psycopg2-binary
-python-dotenv
-passlib[bcrypt]
-python-jose
-resend
-email-validator
-pydantic[email]
-bcrypt
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
 
+# Database
+SQLAlchemy==2.0.25
+psycopg2-binary==2.9.9
+
+# Auth & Security
+python-jose==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+
+# Validation
+pydantic==2.6.1
+pydantic-settings==2.1.0
+email-validator==2.1.0.post1
+
+# Environment
+python-dotenv==1.0.1
+
+# Email
+resend==0.6.0
