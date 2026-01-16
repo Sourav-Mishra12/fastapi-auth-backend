@@ -15,7 +15,7 @@ resend.api_key = RESEND_API_KEY
 def send_reset_password_email(to_email : str , reset_link : str):
     
     try : 
-        resend.emails.send(
+        resend.Emails.send(
             {
                 "from": "Auth <onboarding@resend.dev>",
                 "to":[to_email],
