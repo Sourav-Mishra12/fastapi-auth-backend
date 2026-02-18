@@ -14,3 +14,15 @@ class Product(Base):
     description = Column(String)
     price = Column(Float)
     quantity = Column(Integer)
+
+
+class AIUser(Base):
+
+    __tablename__ = "ai_users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    api_key = Column(String, unique=True, index=True)
+    usage_count = Column(Integer, default=0)
+    last_reset = Column(String)
+    plan = Column(String, default="free")

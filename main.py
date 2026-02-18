@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, status, Depends
 from sqlalchemy.orm import Session
+from fastapi.responses import JSONResponse
 
 from database import sessionLocal, engine, get_db
 import database_models
@@ -9,12 +10,40 @@ from auth.routes import router as auth_router
 from auth.utils import get_current_user
 from core.logger import logger
 
+# -------------------------------
+# NEW IMPORTS (AI + RATE LIMIT)
+# -------------------------------
+from ai_routes import router as ai_router
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+
+# -------------------------------
+# App Setup
+# -------------------------------
 app = FastAPI()
+
+# -------------------------------
+# Rate Limiter Setup
+# -------------------------------
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+def rate_limit_handler(request, exc):
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "Too many requests. Slow down."},
+    )
+
 
 # -------------------------------
 # Routers
 # -------------------------------
 app.include_router(auth_router)
+app.include_router(ai_router)  # NEW AI ROUTER
 
 
 @app.get("/")
@@ -40,7 +69,7 @@ def startup():
 
 
 # -------------------------------
-# Product Routes (DB ONLY)
+# Product Routes (UNCHANGED)
 # -------------------------------
 @app.get("/products", response_model=list[ProductResponse])
 def get_all_products(
