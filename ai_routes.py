@@ -64,37 +64,32 @@ Message:
 
 
 def call_groq(prompt: str) -> str:
-    groq_key = os.getenv("GROQ_API_KEY")
+    headers = {
+        "Authorization": f"Bearer {os.getenv('GROQ_API_KEY')}",
+        "Content-Type": "application/json"
+    }
 
-    if not groq_key:
-        raise HTTPException(status_code=500, detail="Groq API key not configured")
+    payload = {
+        "model": "llama3-8b-8192",
+        "max_tokens": 200,
+        "messages": [
+            {"role": "system", "content": "You are a LinkedIn reply expert."},
+            {"role": "user", "content": prompt}
+        ]
+    }
 
     response = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {groq_key}",
-            "Content-Type": "application/json"
-        },
-        json={
-            "model": "llama3-8b-8192",
-            "max_tokens": 200,
-            "messages": [
-                {"role": "system", "content": "You are a LinkedIn reply expert."},
-                {"role": "user", "content": prompt}
-            ]
-        },
+        headers=headers,
+        json=payload,
         timeout=15
     )
 
     if response.status_code != 200:
-        raise HTTPException(status_code=500, detail="AI service error")
+        raise HTTPException(status_code=500, detail=response.text)
 
     data = response.json()
-
-    try:
-        return data["choices"][0]["message"]["content"]
-    except Exception:
-        raise HTTPException(status_code=500, detail="Invalid AI response format")
+    return data["choices"][0]["message"]["content"]
 
 
 def get_daily_limit(plan: str) -> int:
