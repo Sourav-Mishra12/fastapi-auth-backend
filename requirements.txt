@@ -22,3 +22,6 @@ resend
 
 # Utils
 python-multipart
+
+slowapi
+requests 
