@@ -7,7 +7,11 @@ load_dotenv()   # loading the DATABASE_URL
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL) # creating the engine 
+engine = create_engine(
+   DATABASE_URL,
+   pool_pre_ping=True,
+   pool_recycle=300,
+                       ) # creating the engine 
 
 sessionLocal = sessionmaker(     # making the session 
     autocommit = False,
