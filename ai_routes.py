@@ -70,7 +70,7 @@ def call_groq(prompt: str) -> str:
     }
 
     payload = {
-        "model": "llama3-70b-8192",
+        "model": "llama-3.1-8b-instant",
         "max_tokens": 200,
         "messages": [
             {"role": "system", "content": "You are a LinkedIn reply expert."},
