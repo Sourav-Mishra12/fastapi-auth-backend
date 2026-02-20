@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, status, Depends
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from database import sessionLocal, engine, get_db
 import database_models
@@ -23,6 +24,19 @@ from slowapi.errors import RateLimitExceeded
 # App Setup
 # -------------------------------
 app = FastAPI()
+
+# middleware 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 
 # -------------------------------
 # Rate Limiter Setup
